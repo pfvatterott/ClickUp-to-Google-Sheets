@@ -34,11 +34,34 @@ async function getTeamSpaceData(team_id) {
              console.log(res.status)
          }     
          return res.data
+    
      }
      catch (err) {
          console.error(err);
      }
 }
+
+async function getTeamSpaceData(team_id) {
+    try {
+        let res = await axios({
+             url: `https://api.clickup.com/api/v2/team/${team_id}/space?archived=false`,
+             method: 'get',
+             headers: {
+                 'Content-Type': 'application/json',
+                 'authorization': 'pk_14921511_2CJK3BBNU9C5Q6PFBD6868YOJT4ROV8J'
+             }
+         })
+         if(res.status == 200){
+             console.log(res.status)
+         }     
+         return res.data
+     }
+     catch (err) {
+         console.error(err);
+     }
+}
+
+
 
 
 getTeamData().then(teamRes => {
@@ -51,5 +74,4 @@ getTeamData().then(teamRes => {
     getTeamSpaceData(team_id).then(spaceData => {
         console.log(spaceData)
     })
-
 })
