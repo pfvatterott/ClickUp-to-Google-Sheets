@@ -23,7 +23,6 @@ app.post("/hook", (req, res) => {
 })
 
 
-
 async function getSheets(task) {
     const doc = new GoogleSpreadsheet('1DkC-jKUvIov5PH0THp5dhhyLQCyMXTw1CnACjDZJtc4');
     await doc.useServiceAccountAuth({
@@ -46,7 +45,7 @@ async function adjustSheet(rows, task) {
     await doc.loadInfo()
     const sheet = doc.sheetsByIndex[0]
     for (let i = 0; i < rows.length; i++) {
-        if (rows._rawData[1] === task.id) {
+        if (rows[i]._rawData[1] === task.id) {
             console.log('working')
             rows[rows._rowNumber] = rows._rawData[i]
             await rows[rows._rowNumber].save()
