@@ -2,7 +2,7 @@ const axios = require('axios');
 const express = require("express")
 const bodyParser = require("body-parser")
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT || 3000;
 require('dotenv').config();
 app.use(bodyParser.json())
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`))
