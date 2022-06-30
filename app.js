@@ -12,8 +12,7 @@ app.post("/hook", (req, res) => {
     res.status(200).end() // Responding is important
     let task_id = req.body.task_id
     getTask(task_id).then(getTaskRes => {
-        let list_id = getTaskRes.list.list_id
-        console.log(getTaskRes)
+        let list_id = getTaskRes.list.id
         createTask(list_id)
     })
 })
