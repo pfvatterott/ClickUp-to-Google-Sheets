@@ -46,8 +46,8 @@ async function adjustSheet(rows, task) {
     for (let i = 0; i < rows.length; i++) {
         if (rows[i]._rawData[1] === task.id) {
             console.log('working')
-            rows[rows._rowNumber] = rows[i]._rawData
-            await rows[rows._rowNumber].save()
+            rows[i] = rows[i]._rawData
+            await rows[i].save()
         }
         
     }
