@@ -43,11 +43,12 @@ async function adjustSheet(rows, task) {
       });
     await doc.loadInfo()
     const sheet = doc.sheetsByIndex[0]
+    const rows1 = await sheet.getRows()
     for (let i = 0; i < rows.length; i++) {
         if (rows[i]._rawData[1] === task.id) {
             console.log('working')
-            rows[i] = rows[i]._rawData
-            await rows[i].save()
+            rows1[i] = rows[i]._rawData
+            await rows1[i].save()
         }
         
     }
