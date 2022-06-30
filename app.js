@@ -15,7 +15,6 @@ app.post("/hook", (req, res) => {
         let task_id = req.body.task_id
         getTask(task_id).then(getTaskRes => {
             getSheets(getTaskRes).then(getSheetsRes => {
-                console.log(getSheetsRes)
                 adjustSheet(getSheetsRes, getTaskRes)
             })
         })
@@ -47,7 +46,7 @@ async function adjustSheet(rows, task) {
     for (let i = 0; i < rows.length; i++) {
         if (rows[i]._rawData[1] === task.id) {
             console.log('working')
-            rows[rows._rowNumber] = rows._rawData[i]
+            rows[rows._rowNumber] = rows[i]._rawData
             await rows[rows._rowNumber].save()
         }
         
