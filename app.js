@@ -3,6 +3,7 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const app = express()
 const PORT = 3000
+require('dotenv').config();
 app.use(bodyParser.json())
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`))
 
@@ -23,7 +24,7 @@ async function getTask(task_id) {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': 'pk_14921511_2CJK3BBNU9C5Q6PFBD6868YOJT4ROV8J'
+                'authorization': process.env.api_key
             }
         })
         if(res.status == 200){
@@ -44,7 +45,7 @@ async function createTask(list_id) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': 'pk_14921511_2CJK3BBNU9C5Q6PFBD6868YOJT4ROV8J'
+                'authorization': process.env.api_key
             },
             data: {
                 'name': 'testing123'
@@ -67,7 +68,7 @@ async function getTeamData() {
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': 'pk_14921511_2CJK3BBNU9C5Q6PFBD6868YOJT4ROV8J'
+                'authorization': process.env.api_key
             }
         })
         if(res.status == 200){
@@ -87,7 +88,7 @@ async function getTeamSpaceData(team_id) {
              method: 'get',
              headers: {
                  'Content-Type': 'application/json',
-                 'authorization': 'pk_14921511_2CJK3BBNU9C5Q6PFBD6868YOJT4ROV8J'
+                 'authorization': process.env.api_key
              }
          })
          if(res.status == 200){
@@ -108,7 +109,7 @@ async function getTeamSpaceData(team_id) {
              method: 'get',
              headers: {
                  'Content-Type': 'application/json',
-                 'authorization': 'pk_14921511_2CJK3BBNU9C5Q6PFBD6868YOJT4ROV8J'
+                 'authorization': process.env.api_key
              }
          })
          if(res.status == 200){
@@ -128,7 +129,7 @@ async function createFolderlessList(space_id) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': 'pk_14921511_2CJK3BBNU9C5Q6PFBD6868YOJT4ROV8J'
+                'authorization': process.env.api_key
             },
             data: {
                 'name': 'testing123'
