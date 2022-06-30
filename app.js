@@ -7,14 +7,14 @@ require('dotenv').config();
 app.use(bodyParser.json())
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`))
 
-app.post("/hook", (req, res) => {
-    res.status(200).end() // Responding is important
-    let task_id = req.body.task_id
-    getTask(task_id).then(getTaskRes => {
-        let list_id = getTaskRes.list.id
-        createTask(list_id)
-    })
-})
+// app.post("/hook", (req, res) => {
+//     res.status(200).end() // Responding is important
+//     let task_id = req.body.task_id
+//     getTask(task_id).then(getTaskRes => {
+//         let list_id = getTaskRes.list.id
+//         createTask(list_id)
+//     })
+// })
 
 async function getTask(task_id) {
     try {
