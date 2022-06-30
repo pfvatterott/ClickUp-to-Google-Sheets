@@ -15,11 +15,13 @@ app.post("/hook", (req, res) => {
         let task_id = req.body.task_id
         getTask(task_id).then(getTaskRes => {
             getSheets(getTaskRes).then(getSheetsRes => {
+                console.log(getSheetsRes)
                 adjustSheet(getSheetsRes, getTaskRes)
             })
         })
     }
 })
+
 
 
 async function getSheets(task) {
