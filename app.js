@@ -6,17 +6,30 @@ const PORT = process.env.PORT || 3000;
 require('dotenv').config();
 app.use(bodyParser.json())
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`))
+const { GoogleSpreadsheet } = require('google-spreadsheet');
+
 
 app.post("/hook", (req, res) => {
     res.status(200).end() // Responding is important 
     if (req.body.history_items[0].before.status != null) { //prevent from infinite loop, lol
         let task_id = req.body.task_id
         getTask(task_id).then(getTaskRes => {
-            let list_id = getTaskRes.list.id
-            createTask(list_id)
+            getSheets(getTaskRes)
         })
     }
 })
+
+async function getSheets(task) {
+    const doc = new GoogleSpreadsheet('1DkC-jKUvIov5PH0THp5dhhyLQCyMXTw1CnACjDZJtc4');
+    await doc.useServiceAccountAuth({
+        client_email: process.env.client_email,
+        private_key: process.env.private_key,
+      });
+    await doc.loadInfo()
+    const sheet = doc.sheetsByIndex[0]
+    const AddRow = await sheet.addRow({ Name: task.name, Id: task.id, Due_date: task.due_date, Status: task.status.status });
+
+}
 
 async function getTask(task_id) {
     try {
