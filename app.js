@@ -8,7 +8,7 @@ app.use(bodyParser.json())
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`))
 
 app.post("/hook", (req, res) => {
-    console.log(req.body) // Call your action on the request here
+    console.log(req.body.task_id) // Call your action on the request here
     res.status(200).end() // Responding is important
     let task_id = req.body.task_id
     getTask(task_id).then(getTaskRes => {
