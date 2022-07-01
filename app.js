@@ -15,12 +15,11 @@ app.post("/hook", (req, res) => {
         let task_id = req.body.task_id
         getTask(task_id).then(getTaskRes => {
             getSheets(getTaskRes).then(getSheetsRes => {
-                adjustSheet(getSheetsRes, getTaskRes)
+                
             })
         })
     }
 })
-
 
 async function getSheets(task) {
     const doc = new GoogleSpreadsheet('1DkC-jKUvIov5PH0THp5dhhyLQCyMXTw1CnACjDZJtc4');
@@ -30,31 +29,18 @@ async function getSheets(task) {
       });
     await doc.loadInfo()
     const sheet = doc.sheetsByIndex[0]
-    const rows = await sheet.getRows()
-    return rows
-    // const AddRow = await sheet.addRow({ Name: task.name, Id: task.id, Due_date: task.due_date, Status: task.status.status });
+    const rows = await sheet.getRows().then(rowRes => {
+        for (let i = 0; i < rowRes.length; i++) {
+            if (rowRes[i]._rawData[1] === task.id) {
+                console.log('working')
+                rowRes[i].Status = task.status.status
+                rowRes[i].save()
+            }
+            
+        }
+    })
 }
 
-async function adjustSheet(rows, task) {
-    const doc = new GoogleSpreadsheet('1DkC-jKUvIov5PH0THp5dhhyLQCyMXTw1CnACjDZJtc4');
-    await doc.useServiceAccountAuth({
-        client_email: process.env.client_email,
-        private_key: process.env.private_key,
-      });
-    await doc.loadInfo()
-    const sheet = doc.sheetsByIndex[0]
-    const rows1 = await sheet.getRows()
-    for (let i = 0; i < rows.length; i++) {
-        if (rows[i]._rawData[1] === task.id) {
-            console.log('working')
-            rows1[i] = rows[i]._rawData
-            await rows1[i].save()
-        }
-        
-    }
-    
-    // const AddRow = await sheet.addRow({ Name: task.name, Id: task.id, Due_date: task.due_date, Status: task.status.status });
-}
 
 
 async function getTask(task_id) {
