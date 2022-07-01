@@ -21,12 +21,6 @@ app.post("/hook", (req, res) => {
     }
 })
 
-getTask('33t2eyt').then(getTaskRes => {
-    getSheets(getTaskRes).then(getSheetsRes => {
-        
-    })
-})
-
 async function getSheets(task) {
     const doc = new GoogleSpreadsheet('1DkC-jKUvIov5PH0THp5dhhyLQCyMXTw1CnACjDZJtc4');
     await doc.useServiceAccountAuth({
