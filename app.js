@@ -21,6 +21,12 @@ app.post("/hook", (req, res) => {
     }
 })
 
+getTask('33t2eyt').then(getTaskRes => {
+    getSheets(getTaskRes).then(getSheetsRes => {
+        
+    })
+})
+
 async function getSheets(task) {
     const doc = new GoogleSpreadsheet('1DkC-jKUvIov5PH0THp5dhhyLQCyMXTw1CnACjDZJtc4');
     await doc.useServiceAccountAuth({
@@ -36,8 +42,8 @@ async function getSheets(task) {
                 rowRes[i].Status = task.status.status
                 rowRes[i].save()
             }
-            else if (i === rowRes.length) {
-                const AddRow = await sheet.addRow({ Name: task.name, Id: task.id, Due_date: task.due_date, Status: task.status.status });
+            else if (i === rowRes.length - 1) {
+                const AddRow = sheet.addRow({ Name: task.name, Id: task.id, Due_date: task.due_date, Status: task.status.status });
             }
         }
     })
