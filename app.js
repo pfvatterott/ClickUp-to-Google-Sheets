@@ -14,14 +14,30 @@ app.post("/hook", (req, res) => {
     if (req.body.history_items[0].before.status != null) { //prevent from infinite loop, lol
         let task_id = req.body.task_id
         getTask(task_id).then(getTaskRes => {
-            getSheets(getTaskRes).then(getSheetsRes => {
-                
-            })
+            adjustRow(getTaskRes)
+        })
+    }
+    else {
+        let task_id = req.body.task_id
+        getTask(task_id).then(getTaskRes => {
+            addSheetRow(task)
         })
     }
 })
 
-async function getSheets(task) {
+async function addSheetRow(task) {
+    const doc = new GoogleSpreadsheet('1DkC-jKUvIov5PH0THp5dhhyLQCyMXTw1CnACjDZJtc4');
+    await doc.useServiceAccountAuth({
+        client_email: process.env.client_email,
+        private_key: process.env.private_key,
+      });
+    await doc.loadInfo()
+    const sheet = doc.sheetsByIndex[0]
+    const AddRow = sheet.addRow({ Name: task.name, Id: task.id, Due_date: task.due_date, Status: task.status.status });
+  
+}
+
+async function adjustRow(task) {
     const doc = new GoogleSpreadsheet('1DkC-jKUvIov5PH0THp5dhhyLQCyMXTw1CnACjDZJtc4');
     await doc.useServiceAccountAuth({
         client_email: process.env.client_email,
@@ -32,18 +48,12 @@ async function getSheets(task) {
     const rows = await sheet.getRows().then(rowRes => {
         for (let i = 0; i < rowRes.length; i++) {
             if (rowRes[i]._rawData[1] === task.id) {
-                console.log('working')
                 rowRes[i].Status = task.status.status
                 rowRes[i].save()
-            }
-            else if (i === rowRes.length - 1) {
-                const AddRow = sheet.addRow({ Name: task.name, Id: task.id, Due_date: task.due_date, Status: task.status.status });
             }
         }
     })
 }
-
-
 
 async function getTask(task_id) {
     try {
@@ -172,23 +182,3 @@ async function createFolderlessList(space_id) {
         console.error(err);
     }
 }
-
-
-
-
-// getTeamData().then(teamRes => {
-//     let team_id;
-//     for (let i = 0; i < teamRes.teams.length; i++) {
-//         if (teamRes.teams[i].name === 'Business') {
-//             team_id = teamRes.teams[i].id
-//         }
-//     }
-//     getTeamSpaceData(team_id).then(spaceData => {
-//         let spaces = spaceData.spaces
-//         let desiredSpace = spaces.find(o => o.name === 'Space')
-//         console.log(desiredSpace.id)
-//         createFolderlessList(desiredSpace.id).then(createFolderlessListRes => {
-//             console.log(createFolderlessListRes)
-//         })
-//     })
-// })
