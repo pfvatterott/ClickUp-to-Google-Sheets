@@ -20,7 +20,7 @@ app.post("/hook", (req, res) => {
     else {
         let task_id = req.body.task_id
         getTask(task_id).then(getTaskRes => {
-            addSheetRow(task)
+            addSheetRow(getTaskRes)
         })
     }
 })
